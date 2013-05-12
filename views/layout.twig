@@ -1,1 +1,27 @@
-layout.twig
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Reader</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div class="span2">
+          {% block sidebar %}{% endblock %}
+        </div>
+        <div class="span10">
+          <div class="page-header">
+            <h1>RSS Reader <small>a google reader clone</small></h1>
+          </div>
+          {% block content %}{% endblock %}
+        </div>
+      </div>
+    </div>
+    <footer>
+      RSS Reader
+    </footer>
+    <script type="text/javascript" href="/js/bootstrap.js"></script>
+  </body>
+</html>

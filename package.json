@@ -9,6 +9,8 @@
     "express": "3.2.4",
     "twig": "*",
     "mongoose": "3.6.x",
-    "less-middleware": "*"
+    "less-middleware": "*",
+    "feedparser": "~0.15.3",
+    "request": "~2.21.0"
   }
 }

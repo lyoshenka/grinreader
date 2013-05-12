@@ -1,14 +1,12 @@
-
-/**
- * Module dependencies.
- */
-
 var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
   , http = require('http')
   , path = require('path')
   , twig = require('twig');
+
+// var mongoose = require('mongoose');
+// mongoose.connect('mongodb://localhost/reader');
 
 var app = express();
 
@@ -21,7 +19,7 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use(express.cookieParser('your secret here'));
+app.use(express.cookieParser('0a4992489917ba5aadff943b383175bfae107534'));
 app.use(express.session());
 app.use(app.router);
 app.use(require('less-middleware')({ src: __dirname + '/public' }));
@@ -38,6 +36,3 @@ app.get('/users', user.list);
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
-
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/reader');

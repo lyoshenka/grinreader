@@ -1,5 +1,18 @@
-<html>
-<body>
-  {{ title }}
-</body>
-</html>
+{% extends "layout.twig" %}
+{% block content %}
+  <h2><a href="{{ meta.link }}">{{ meta.title }}</a></h2>
+  {% for article in articles %}
+    <article>
+      <div class="meta pull-right muted">
+        {{ article.pubdate | date('F j, Y g:iA') }}
+      </div>
+      <h3><a href="{{ article.link }}">{{ article.title }}</a></h3>
+      <div class="row-fluid">
+        <div class="span8">
+          {{ article.description }}
+        </div>
+      </div>
+    </article>
+    {% if not loop.last %}<hr>{% endif %}
+  {% endfor %}
+{% endblock %}
