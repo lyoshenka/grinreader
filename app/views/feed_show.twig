@@ -1,7 +1,7 @@
 {% extends "layout.twig" %}
 {% block content %}
   <h2><a href="{{ feed.url }}">{{ meta.name }}</a></h2>
-  {% for article in feed.articles %}
+  {% for article in feed.articlesByDate %}
     <article>
       <div class="meta pull-right muted">
         {{ article.date | date('F j, Y g:iA') }}

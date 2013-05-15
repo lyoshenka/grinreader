@@ -3,7 +3,7 @@
   <h2>Feeds</h2>
   <ul class="unstyled">
     {% for feed in feeds %}
-      <li><a href="/feed/{{ feed | url_encode }}">{{ feed }}</a></li>
+      <li><a href="/feed/{{ feed.id }}">{{ feed.name }}</a> ({{ feed.getUnreadCount() }})</li>
     {% endfor %}
   </ul>
 {% endblock %}

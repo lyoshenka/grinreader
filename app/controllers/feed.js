@@ -13,7 +13,8 @@ exports.new = function(req, res) {
 
       var feed = new Feed({
         name: meta.title,
-        url: meta.link
+        url: req.param('url'),
+        link: meta.link
       });
 
       for (var i = articles.length - 1; i >= 0; i--) {
@@ -44,5 +45,10 @@ exports.show = function(req, res) {
 };
 
 exports.list = function(req, res) {
-  res.render('index', {feeds: []});
+  Feed.findForList(function(err, feeds) {
+    if (err) {
+      res.render('error', {error: err});
+    }
+    res.render('feed_index', {feeds: feeds});
+  });
 };

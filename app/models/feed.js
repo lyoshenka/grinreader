@@ -9,14 +9,25 @@ var articleSchema = new mongoose.Schema({
   read: { type: Boolean, default: false }
 });
 
-var getArticles = function(articles) {
-  return _.sortBy(articles, 'date').reverse();
-};
-
 var feedSchema = new mongoose.Schema({
     name: String,
     url: String,
-    articles: {type: [articleSchema], get: getArticles }
+    link: { type: String, default: '' },
+    articles: { type: [articleSchema] }
 });
+
+feedSchema.virtual('articlesByDate').get(function() {
+  return _.sortBy(this.articles, 'date').reverse();
+});
+
+feedSchema.methods.getUnreadCount = function (cb) {
+  return _.filter(this.articles, function(article){
+    return !article.read;
+  }).length;
+};
+
+feedSchema.statics.findForList = function (cb) {
+  this.find().sort('name').exec(cb);
+};
 
 mongoose.model('Feed', feedSchema);
