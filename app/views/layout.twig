@@ -2,14 +2,14 @@
 <html lang="en">
   <head>
     <title>Reader</title>
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
   </head>
   <body>
     <div class="container-fluid">
       <div class="row-fluid">
-        <div class="span2">
-          {% block sidebar %}{% endblock %}
+        <div class="span2" id="sidebar">
+          {% include '_feed_new_form.twig' %}
         </div>
         <div class="span10">
           <div class="page-header">

@@ -1,18 +1,25 @@
 var express = require('express')
-  , routes = require('./routes')
-  , user = require('./routes/user')
   , http = require('http')
+  , fs = require('fs')
   , path = require('path')
-  , twig = require('twig');
+  , twig = require('twig')
+  , mongoose = require('mongoose');
 
-// var mongoose = require('mongoose');
-// mongoose.connect('mongodb://localhost/reader');
+
+mongoose.connect('mongodb://localhost/reader');
+
+// load models
+var models_path = __dirname + '/app/models'
+fs.readdirSync(models_path).forEach(function (file) {
+  require(models_path+'/'+file);
+});
+
 
 var app = express();
 
 // all environments
 app.set('port', process.env.PORT || 8000);
-app.set('views', __dirname + '/views');
+app.set('views', __dirname + '/app/views');
 app.set('view engine', 'twig');
 app.set("twig options", { strict_variables: false });
 app.use(express.favicon());
@@ -30,9 +37,10 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
-app.get('/users', user.list);
+// load routes
+require('./config/routing')(app);
 
+// servertime!
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });

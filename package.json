@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "NODE_ENV=development supervisor -q -e 'node|js|twig|css' server.js",
+    "prod": "node server.js"
   },
   "dependencies": {
     "express": "3.2.4",
@@ -11,6 +12,7 @@
     "mongoose": "3.6.x",
     "less-middleware": "*",
     "feedparser": "~0.15.3",
-    "request": "~2.21.0"
+    "request": "~2.21.0",
+    "underscore": "~1.4.4"
   }
 }
