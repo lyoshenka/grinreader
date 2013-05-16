@@ -13,6 +13,7 @@
     "less-middleware": "*",
     "feedparser": "~0.15.3",
     "request": "~2.21.0",
-    "underscore": "~1.4.4"
+    "underscore": "~1.4.4",
+    "connect-flash": "~0.1.1"
   }
 }

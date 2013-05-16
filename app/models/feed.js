@@ -5,6 +5,7 @@ var articleSchema = new mongoose.Schema({
   title: { type: String, default: '' },
   body: { type: String, default: '' },
   url: { type: String, default: '' },
+  guid: { type: String, default: '' },
   date: { type: Date },
   read: { type: Boolean, default: false }
 });

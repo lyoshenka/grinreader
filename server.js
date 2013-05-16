@@ -3,7 +3,9 @@ var express = require('express')
   , fs = require('fs')
   , path = require('path')
   , twig = require('twig')
-  , mongoose = require('mongoose');
+  , mongoose = require('mongoose')
+  , flash = require('connect-flash')
+  ;
 
 
 mongoose.connect('mongodb://localhost/reader');
@@ -28,6 +30,7 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser('0a4992489917ba5aadff943b383175bfae107534'));
 app.use(express.session());
+app.use(flash());
 app.use(app.router);
 app.use(require('less-middleware')({ src: __dirname + '/public' }));
 app.use(express.static(path.join(__dirname, 'public')));
