@@ -5,6 +5,8 @@ var express = require('express')
   , twig = require('twig')
   , mongoose = require('mongoose')
   , flash = require('connect-flash')
+  , argv = require('optimist').argv
+  , Q = require('q')
   ;
 
 
@@ -15,6 +17,11 @@ var models_path = __dirname + '/app/models'
 fs.readdirSync(models_path).forEach(function (file) {
   require(models_path+'/'+file);
 });
+
+if (argv.u) {
+  require('./app/tasks/update_feeds')().fin(function(){ process.exit(); });
+  return;
+}
 
 
 var app = express();

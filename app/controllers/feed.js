@@ -1,7 +1,8 @@
 var request = require('request'),
     FeedParser = require('feedparser'),
     mongoose = require('mongoose'),
-    Feed = mongoose.model('Feed');
+    Feed = mongoose.model('Feed'),
+    Q = require('q');
 
 exports.new = function(req, res) {
   request(req.param('url'))
@@ -11,26 +12,32 @@ exports.new = function(req, res) {
     })
     .on('complete', function (meta, articles) {
 
-      var feed = new Feed({
-        name: meta.title,
-        url: req.param('url'),
-        link: meta.link
-      });
-
-      for (var i = articles.length - 1; i >= 0; i--) {
-        feed.articles.push({
-          title: articles[i].title,
-          body: articles[i].description,
-          url: articles[i].link,
-          date: articles[i].pubdate
-        });
-      };
-
-      feed.save(function (err) {
-        if (err) {
-          res.render('error', {error: err});
+      Feed.findOneByUrl(req.param('url'))
+      .then(function(existingFeed) {
+        if (existingFeed) {
+          throw "Feed exists for this URL."
         }
-        res.redirect('/feed/'+feed.id);
+
+        var feed = new Feed({
+          name: meta.title,
+          url: req.param('url'),
+          link: meta.link
+        });
+
+        feed.fetchUpdates()
+        .then(function() {
+          var deferred = Q.defer();
+          console.log('saving');
+          feed.save(deferred.makeNodeResolver());
+          return deferred.promise;
+        })
+        .then(function(){
+          res.redirect('/feed/'+feed.id);
+        })
+        .done();
+      })
+      .fail(function(error) {
+        res.render('error', {error: error});
       });
     });
 };
@@ -45,10 +52,12 @@ exports.show = function(req, res) {
 };
 
 exports.list = function(req, res) {
-  Feed.findForList(function(err, feeds) {
-    if (err) {
-      res.render('error', {error: err});
-    }
+  Feed.findForList()
+  .then(function(feeds) {
     res.render('feed_index', {feeds: feeds});
-  });
+  })
+  .fail(function(error) {
+    res.render('error', {error: err});
+  })
+  .done();
 };
