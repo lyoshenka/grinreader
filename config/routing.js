@@ -5,4 +5,5 @@ module.exports = function (app) {
   app.get('/', feed.list);
   app.post('/feed/new', feed.new);
   app.get('/feed/:id', feed.show);
+  app.post('/markRead/:articleId', feed.markRead);
 };

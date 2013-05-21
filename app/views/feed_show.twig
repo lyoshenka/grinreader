@@ -2,7 +2,7 @@
 {% block content %}
   <h2><a href="{{ feed.url }}">{{ feed.name }}</a></h2>
   {% for article in feed.articlesByDate %}
-    <article>
+    <article data-id="{{ article._id }}">
       <div class="meta pull-right muted">
         {{ article.date | date('F j, Y g:iA') }}
       </div>
@@ -12,6 +12,7 @@
           {{ article.body }}
         </div>
       </div>
+      <a class="js-mark-read" href="javascript:;">Mark Read</a>
     </article>
     {% if not loop.last %}<hr>{% endif %}
   {% endfor %}

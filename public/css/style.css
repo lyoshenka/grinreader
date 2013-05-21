@@ -2,6 +2,9 @@ article {
   border: solid 1px #ccc;
   padding: 5px 10px;
 }
+article.read {
+  background-color: #f3f3f3;
+}
 footer {
   background-color: #eee;
 }

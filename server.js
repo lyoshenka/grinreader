@@ -9,7 +9,6 @@ var express = require('express')
   , Q = require('q')
   ;
 
-
 mongoose.connect('mongodb://localhost/reader');
 
 // load models
@@ -18,11 +17,18 @@ fs.readdirSync(models_path).forEach(function (file) {
   require(models_path+'/'+file);
 });
 
+
 if (argv.u) {
-  require('./app/tasks/update_feeds')().fin(function(){ process.exit(); });
+  // update feeds
+  require('./app/tasks/update_feeds')().fin(function() { process.exit(); });
   return;
 }
 
+if (argv.i) {
+  // import feeds
+  require('./app/tasks/import_feeds')(argv.i).fin(function() { process.exit(); });
+  return;
+}
 
 var app = express();
 
@@ -51,6 +57,6 @@ if ('development' == app.get('env')) {
 require('./config/routing')(app);
 
 // servertime!
-http.createServer(app).listen(app.get('port'), function(){
+http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
 });

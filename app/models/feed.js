@@ -53,9 +53,6 @@ feedSchema.methods.fetchUpdates = function() {
                 self.articles[self.articles.indexOf(self.getArticleByGuid(article.guid))] :
                 self.articles.create({ guid: article.guid });
 
-        // console.log(article.title);
-        // console.log(_.contains(existingIds, article.guid));
-
         a.set({
           title: article.title,
           body: article.description,
@@ -64,7 +61,6 @@ feedSchema.methods.fetchUpdates = function() {
         });
 
         if (a.isNew) {
-          console.log('added ' + a.title);
           self.articles.push(a);
         }
       });
@@ -90,6 +86,46 @@ feedSchema.statics.findForList = function () {
 feedSchema.statics.findOneByUrl = function (url) {
   var deferred = Q.defer();
   this.findOne({ url: url }).exec(deferred.makeNodeResolver());
+  return deferred.promise;
+};
+
+feedSchema.statics.findOneByArticleId = function (articleId) {
+  var deferred = Q.defer();
+  this.findOne({ articles: { $elemMatch: { _id: articleId } }}).exec(deferred.makeNodeResolver());
+  return deferred.promise;
+};
+
+feedSchema.statics.addFeed = function (url) {
+  var deferred = Q.defer(),
+      self=this;
+
+  request(url)
+    .pipe(new FeedParser({}))
+    .on('error', function(error) {
+      deferred.reject(error);
+    })
+    .on('complete', function (meta, articles) {
+      self.findOneByUrl(url)
+      .done(function(existingFeed) {
+        if (existingFeed) {
+          deferred.resolve();
+          return;
+        }
+
+        Q.ninvoke(self, 'create', {
+          name: meta.title,
+          url: url,
+          link: meta.link
+        })
+        .post('fetchUpdates')
+        .post('save')
+        .then(function() {
+          deferred.resolve();
+        });
+      }, function(error) {
+        deferred.reject(error);
+      });
+    });
   return deferred.promise;
 };
 

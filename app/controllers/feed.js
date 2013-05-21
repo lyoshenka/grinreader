@@ -13,9 +13,9 @@ exports.new = function(req, res) {
     .on('complete', function (meta, articles) {
 
       Feed.findOneByUrl(req.param('url'))
-      .then(function(existingFeed) {
+      .done(function(existingFeed) {
         if (existingFeed) {
-          throw "Feed exists for this URL."
+          throw "Feed exists for this URL.";
         }
 
         var feed = new Feed({
@@ -31,33 +31,42 @@ exports.new = function(req, res) {
           feed.save(deferred.makeNodeResolver());
           return deferred.promise;
         })
-        .then(function(){
+        .done(function() {
           res.redirect('/feed/'+feed.id);
-        })
-        .done();
-      })
-      .fail(function(error) {
+        });
+      }, function(error) {
         res.render('error', {error: error});
       });
     });
 };
 
 exports.show = function(req, res) {
-  Feed.findById(req.params.id, function (err, feed) {
-    if (err) {
-      res.render('error', {error: err});
-    }
+  Q.ninvoke(Feed, 'findById', req.params.id)
+  .done(function(feed) {
     res.render('feed_show', { feed: feed });
-  })
+  }, function(error) {
+    res.render('error', {error: error});
+  });
 };
 
 exports.list = function(req, res) {
   Feed.findForList()
-  .then(function(feeds) {
+  .done(function(feeds) {
     res.render('feed_index', {feeds: feeds});
-  })
-  .fail(function(error) {
+  }, function(error) {
     res.render('error', {error: err});
-  })
-  .done();
+  });
+};
+
+exports.markRead = function(req, res) {
+  Feed.findOneByArticleId(req.params.articleId)
+  .done(function(feed) {
+    feed.articles.id(req.params.articleId).read = 1;
+    Q.ninvoke(feed, 'save')
+    .then(function() {
+      res.json({ success: true });
+    });
+  }, function(error) {
+    res.json({ success: false, error: error });
+  });
 };
