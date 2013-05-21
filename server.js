@@ -7,6 +7,7 @@ var express = require('express')
   , flash = require('connect-flash')
   , argv = require('optimist').argv
   , Q = require('q')
+  , fancyTimestamp = require('fancy-timestamp')
   ;
 
 mongoose.connect('mongodb://localhost/reader');
@@ -29,6 +30,11 @@ if (argv.i) {
   require('./app/tasks/import_feeds')(argv.i).fin(function() { process.exit(); });
   return;
 }
+
+// twig extension
+twig.extendFilter("fancyTimestamp", function(timestamp) {
+    return fancyTimestamp(timestamp, true);
+});
 
 var app = express();
 

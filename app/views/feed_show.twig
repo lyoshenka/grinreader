@@ -3,8 +3,8 @@
   <h2><a href="{{ feed.url }}">{{ feed.name }}</a></h2>
   {% for article in feed.articlesByDate %}
     <article data-id="{{ article._id }}">
-      <div class="meta pull-right muted">
-        {{ article.date | date('F j, Y g:iA') }}
+      <div class="meta pull-right muted" title="{{ article.date | date('F j, Y g:iA') }}">
+        {{ article.date | fancyTimestamp }}
       </div>
       <h3><a href="{{ article.url }}">{{ article.title }}</a></h3>
       <div class="row-fluid">
