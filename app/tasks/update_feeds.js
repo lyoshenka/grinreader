@@ -21,13 +21,12 @@ module.exports = function() {
         feed.save(deferred.makeNodeResolver());
         return deferred.promise;
       })
-      .then(function() {
+      .done(function() {
         updated += 1;
         if (updated == feeds.length) {
           deferred.resolve(feeds);
         }
-      })
-      .done();
+      });
     });
   });
 
