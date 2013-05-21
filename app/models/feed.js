@@ -59,40 +59,52 @@ feedSchema.statics.findOneByArticleId = function (articleId) {
   return deferred.promise;
 };
 
-feedSchema.methods.fetchUpdates = function() {
+feedSchema.methods.fetchUpdates = function(articles) {
   var self = this,
-      deferred = Q.defer();
+      onComplete = function(articles) {
+        var existingIds = self.getIds();
 
-  request(self.url)
-    .pipe(new FeedParser({}))
-    .on('error', function(error) {
-      deferred.reject(error);
-    })
-    .on('complete', function (meta, articles) {
-      var existingIds = self.getIds();
+        _.each(articles, function(article) {
 
-      _.each(articles, function(article) {
+          console.log(article);
+          var a = _.contains(existingIds, article.guid) ?
+                  self.articles[self.articles.indexOf(self.getArticleByGuid(article.guid))] :
+                  self.articles.create({ guid: article.guid });
 
-        var a = _.contains(existingIds, article.guid) ?
-                self.articles[self.articles.indexOf(self.getArticleByGuid(article.guid))] :
-                self.articles.create({ guid: article.guid });
+          a.set({
+            title: article.title,
+            body: article.description,
+            url: article.link,
+            date: article.pubdate
+          });
 
-        a.set({
-          title: article.title,
-          body: article.description,
-          url: article.link,
-          date: article.pubdate
+          if (a.isNew) {
+            self.articles.push(a);
+          }
         });
+      };
 
-        if (a.isNew) {
-          self.articles.push(a);
-        }
+  if (articles)
+  {
+    onComplete(articles);
+    return Q(self);
+  }
+  else
+  {
+    var deferred = Q.defer();
+
+    request(self.url)
+      .pipe(new FeedParser({}))
+      .on('error', function(error) {
+        deferred.reject(error);
+      })
+      .on('complete', function (meta, articles) {
+        onComplete(articles);
+        deferred.resolve(self);
       });
 
-      deferred.resolve(self);
-    });
-
-  return deferred.promise;
+    return deferred.promise;
+  }
 };
 
 feedSchema.statics.addFeed = function (url) {
@@ -117,21 +129,16 @@ feedSchema.statics.addFeed = function (url) {
           url: url,
           link: meta.link
         })
-        .post('fetchUpdates')
-        .then(function(feed) {
-          var d2 = Q.defer();
+        .invoke('fetchUpdates', articles)
+        .done(function(feed) {
           feed.save(function(err,feed) {
             if (err) {
-              d2.reject(err);
+              deferred.reject(feed);
             }
             else {
-              d2.resolve(feed);
+              deferred.resolve(feed);
             }
           });
-          return d2.promise;
-        })
-        .done(function(feed) {
-          deferred.resolve(feed);
         });
       }, function(error) {
         deferred.reject(error);
