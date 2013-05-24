@@ -36,6 +36,7 @@ twig.extendFilter("fancyTimestamp", function(timestamp) {
     return fancyTimestamp(timestamp, true);
 });
 
+
 var app = express();
 
 // all environments
@@ -50,6 +51,15 @@ app.use(express.methodOverride());
 app.use(express.cookieParser('0a4992489917ba5aadff943b383175bfae107534'));
 app.use(express.session());
 app.use(flash());
+app.use(function (req, res, next) {
+  mongoose.model('Feed').findForList()
+  .done(function(feeds){
+    res.locals({
+      sidebarFeeds: feeds
+    });
+    next();
+  });
+});
 app.use(app.router);
 app.use(require('less-middleware')({ src: __dirname + '/public' }));
 app.use(express.static(path.join(__dirname, 'public')));

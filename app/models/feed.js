@@ -113,7 +113,12 @@ feedSchema.statics.addFeed = function (url) {
     .pipe(new FeedParser({}))
     .on('error', function(error) {
       console.log('FAIL: ' + url);
-      deferred.reject(error);
+      if (error == 'Error: Not a feed') {
+        deferred.reject('Not a feed: ' + url);
+      }
+      else {
+        deferred.reject(error);
+      }
     })
     .on('complete', function (meta, articles) {
       self.findOneByUrl(url)

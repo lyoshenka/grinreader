@@ -1,0 +1,12 @@
+{% extends "layout.twig" %}
+{% block content %}
+  <h2>Delete All Feeds</h2>
+  <div class="alert alert-error">
+    <h3>Are You Sure?</h3>
+    <p>
+      You are about to delete all your feeds. Is this really what youw want?
+    </p>
+    <a class="btn btn-primary" href="/feed/delete_all?confirm=1">Yes, delete everything</a>
+    <a class="btn" href="/">No, I don't want that</a>
+  </div>
+{% endblock %}

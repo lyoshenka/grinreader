@@ -5,6 +5,9 @@ article {
 article.read {
   background-color: #f3f3f3;
 }
+article.last {
+  margin-bottom: 40px;
+}
 footer {
   background-color: #eee;
 }

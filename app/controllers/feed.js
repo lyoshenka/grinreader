@@ -2,7 +2,8 @@ var request = require('request'),
     FeedParser = require('feedparser'),
     mongoose = require('mongoose'),
     Feed = mongoose.model('Feed'),
-    Q = require('q');
+    Q = require('q'),
+    _ = require('underscore');
 
 exports.new = function(req, res) {
   Feed.addFeed(req.param('url'))
@@ -55,4 +56,48 @@ exports.delete = function(req, res) {
   }, function(error) {
     res.render('error', {error: error});
   });
+};
+
+exports.deleteAll = function(req, res) {
+  if (req.query.confirm) {
+    Q.ninvoke(Feed,'remove')
+    .done(function() {
+      res.redirect('/');
+    });
+  }
+  else {
+    res.render('feed_delete_all');
+  }
+};
+
+exports.import = function(req, res) {
+  if (req.method == 'POST') {
+    var lines = _.compact(req.body.feeds.toString().split(/\r\n|\r|\n/g)),
+        count = 0,
+        errors = [];
+
+    _.each(lines, function(line) {
+      if (line) {
+        Feed.addFeed(line)
+        .fail(function(error) {
+          errors.push(error);
+        })
+        .fin(function() {
+          count = count + 1;
+          if (count == lines.length) {
+            if (errors.length) {
+              res.render('error', {error: errors.join("<br/>")})
+              return;
+              // req.flash('error', errors.join("<br/>"));
+            }
+            res.redirect('/');
+            return;
+          }
+        });
+      }
+    });
+  }
+  else {
+    res.render('feed_import');
+  }
 };

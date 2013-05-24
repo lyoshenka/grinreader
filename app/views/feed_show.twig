@@ -1,8 +1,11 @@
 {% extends "layout.twig" %}
 {% block content %}
+  <div class="pull-right">
+    <a href="/feed/delete/{{ feed.id }}" class="btn"><i class='icon-trash'></i>Delete Feed</a>
+  </div>
   <h2><a href="{{ feed.url }}">{{ feed.name }}</a></h2>
   {% for article in feed.articlesByDate %}
-    <article data-id="{{ article._id }}">
+    <article data-id="{{ article._id }}" class="{{ loop.last ? 'last' : '' }}">
       <div class="meta pull-right muted" title="{{ article.date | date('F j, Y g:iA') }}">
         {{ article.date | fancyTimestamp }}
       </div>

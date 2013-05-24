@@ -1,0 +1,10 @@
+{% extends "layout.twig" %}
+{% block content %}
+  <h2>Feed Import</h2>
+  <p>Place your feed urls below, one URL per line.</p>
+  <form method="POST" action="">
+    <textarea name="feeds" rows="6"></textarea>
+    <br/>
+    <button type="submit" class="btn btn-primary">Import</button>
+  </form>
+{% endblock %}

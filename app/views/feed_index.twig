@@ -5,9 +5,6 @@
     {% for feed in feeds %}
       <li class="feed_list_item">
         <a href="/feed/{{ feed.id }}">{{ feed.name }}</a> ({{ feed.getUnreadCount() }})
-        <span class="controls">
-          <a href="/feed/delete/{{ feed.id }}"><i class='icon-trash'></i></a>
-        </span>
       </li>
     {% endfor %}
   </ul>
