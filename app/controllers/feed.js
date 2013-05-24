@@ -43,3 +43,16 @@ exports.markRead = function(req, res) {
     res.json({ success: false, error: error });
   });
 };
+
+exports.delete = function(req, res) {
+  Q.ninvoke(Feed, 'findById', req.params.id)
+  .done(function(feed) {
+    Q.ninvoke(feed,'remove')
+    .done(function() {
+      req.flash('success', 'Feed deleted.');
+      res.redirect('/'  );
+    })
+  }, function(error) {
+    res.render('error', {error: error});
+  });
+};

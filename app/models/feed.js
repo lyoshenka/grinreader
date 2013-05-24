@@ -112,6 +112,7 @@ feedSchema.statics.addFeed = function (url) {
   request(url)
     .pipe(new FeedParser({}))
     .on('error', function(error) {
+      console.log('FAIL: ' + url);
       deferred.reject(error);
     })
     .on('complete', function (meta, articles) {
@@ -123,7 +124,7 @@ feedSchema.statics.addFeed = function (url) {
         }
 
         Q.ninvoke(self, 'create', {
-          name: meta.title,
+          name: meta.title || 'No Title',
           url: url,
           link: meta.link
         })

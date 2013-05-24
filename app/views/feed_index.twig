@@ -1,9 +1,14 @@
 {% extends "layout.twig" %}
 {% block content %}
-  <h2>Feeds</h2>
+  <h2>Feeds ({{ feeds.length }})</h2>
   <ul class="unstyled">
     {% for feed in feeds %}
-      <li><a href="/feed/{{ feed.id }}">{{ feed.name }}</a> ({{ feed.getUnreadCount() }})</li>
+      <li class="feed_list_item">
+        <a href="/feed/{{ feed.id }}">{{ feed.name }}</a> ({{ feed.getUnreadCount() }})
+        <span class="controls">
+          <a href="/feed/delete/{{ feed.id }}"><i class='icon-trash'></i></a>
+        </span>
+      </li>
     {% endfor %}
   </ul>
 {% endblock %}

@@ -20,6 +20,8 @@ module.exports = function(feedFile) {
           if (count == lines.length) {
             deferred.resolve();
           }
+        }, function(error) {
+          deferred.reject(error);
         });
       }
     });

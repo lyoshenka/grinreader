@@ -12,3 +12,9 @@ footer {
   border-right: solid 1px #eee;
   padding-top: 50px;
 }
+.feed_list_item .controls {
+  display: none;
+}
+.feed_list_item:hover .controls {
+  display: inline;
+}
