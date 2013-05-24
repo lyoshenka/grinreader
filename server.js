@@ -10,7 +10,7 @@ var express = require('express')
   , fancyTimestamp = require('fancy-timestamp')
   ;
 
-mongoose.connect('mongodb://localhost/reader');
+mongoose.connect(process.env.MONGOHQ_URL || 'mongodb://localhost/reader');
 
 // load models
 var models_path = __dirname + '/app/models'

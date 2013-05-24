@@ -7,8 +7,8 @@
     "prod": "node server.js"
   },
   "engines": {
-    "node": "0.9.x",
-    "npm":  "1.1.x"
+    "node": "0.10.x",
+    "npm":  "1.2.x"
   },
   "dependencies": {
     "express": "3.2.4",
