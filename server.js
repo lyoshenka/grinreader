@@ -59,8 +59,12 @@ app.use(express.cookieParser('0a4992489917ba5aadff943b383175bfae107534'));
 app.use(express.session());
 app.use(flash());
 app.use(function (req, res, next) {
+  if (req.xhr) {
+    next();
+    return;
+  }
   mongoose.model('Feed').findForList()
-  .done(function(feeds){
+  .done(function(feeds) {
     res.locals({
       sidebarFeeds: feeds
     });

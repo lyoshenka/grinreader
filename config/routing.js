@@ -9,4 +9,7 @@ module.exports = function (app) {
   app.all('/feed/import', feed.import);
   app.get('/feed/:id', feed.show);
   app.post('/markRead/:articleId', feed.markRead);
+
+  var option = require('../app/controllers/option');
+  app.get('/option/unreadOnly', option.unreadOnly);
 };

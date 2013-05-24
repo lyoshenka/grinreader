@@ -5,6 +5,9 @@ article {
 article.read {
   background-color: #f3f3f3;
 }
+article.read a {
+  color: #333;
+}
 article.last {
   margin-bottom: 40px;
 }
@@ -14,10 +17,4 @@ footer {
 #sidebar {
   border-right: solid 1px #eee;
   padding-top: 50px;
-}
-.feed_list_item .controls {
-  display: none;
-}
-.feed_list_item:hover .controls {
-  display: inline;
 }
