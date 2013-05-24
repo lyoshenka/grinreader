@@ -8,7 +8,7 @@
   },
   "engines": {
     "node": "0.10.x",
-    "npm":  "1.2.x"
+    "npm": "1.2.x"
   },
   "dependencies": {
     "express": "3.2.4",
@@ -21,6 +21,7 @@
     "connect-flash": "~0.1.1",
     "optimist": "~0.4.0",
     "q": "~0.9.3",
-    "fancy-timestamp": "0.0.3"
+    "fancy-timestamp": "0.0.3",
+    "npm": "~1.2.22"
   }
 }
