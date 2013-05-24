@@ -21,6 +21,7 @@
     "connect-flash": "~0.1.1",
     "optimist": "~0.4.0",
     "q": "~0.9.3",
-    "fancy-timestamp": "0.0.3"
+    "fancy-timestamp": "0.0.3",
+    "nodetime": "~0.8.12"
   }
 }

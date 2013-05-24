@@ -10,6 +10,13 @@ var express = require('express')
   , fancyTimestamp = require('fancy-timestamp')
   ;
 
+if(process.env.NODETIME_ACCOUNT_KEY) {
+  require('nodetime').profile({
+    accountKey: process.env.NODETIME_ACCOUNT_KEY,
+    appName: 'Reader' // optional
+  });
+}
+
 mongoose.connect(process.env.MONGOHQ_URL || 'mongodb://localhost/reader');
 
 // load models
