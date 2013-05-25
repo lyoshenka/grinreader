@@ -53,27 +53,15 @@ app.set('view engine', 'twig');
 app.set("twig options", { strict_variables: false });
 app.use(express.favicon());
 app.use(express.logger('dev'));
+app.use(require('less-middleware')({ src: __dirname + '/public' }));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser('0a4992489917ba5aadff943b383175bfae107534'));
 app.use(express.session());
 app.use(flash());
-app.use(function (req, res, next) {
-  if (req.xhr) {
-    next();
-    return;
-  }
-  mongoose.model('Feed').findForList()
-  .done(function(feeds) {
-    res.locals({
-      sidebarFeeds: feeds
-    });
-    next();
-  });
-});
+app.use(require('./config/globals'));
 app.use(app.router);
-app.use(require('less-middleware')({ src: __dirname + '/public' }));
-app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if ('development' == app.get('env')) {

@@ -5,9 +5,17 @@ $(function() {
     $.post('/markRead/' + article.data('id'));
   });
 
-  $('.js-unread-toggle').click(function() {
-    var checked = $(this).is(':checked');
-    $('article.read').toggle(!checked);
-    $.get('/option/unreadOnly', {value: checked ? 1 : 0});
+  $('.js-unread-toggle a').click(function() {
+    if ($(this).hasClass('js-all') || $(this).hasClass('js-unread')) {
+      var control = $(this).closest('.js-unread-toggle'),
+          currentVal = control.data('unread-only') ? 1 : 0,
+          newVal = $(this).hasClass('js-unread') ? 1 : 0;
+      if (!currentVal != !newVal) { // XOR
+        control.data('unread-only', newVal)
+        control.find('.js-button-text').html($(this).text());
+        $('article.read').toggle(!newVal);
+        $.get('/option/unreadOnly', {value: newVal});
+      }
+    }
   });
 });

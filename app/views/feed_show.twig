@@ -4,8 +4,21 @@
     <a href="/feed/delete/{{ feed.id }}" class="btn"><i class='icon-trash'></i> Delete Feed</a>
   </div>
   <h2><a href="{{ feed.url }}">{{ feed.name }}</a></h2>
-  <input type="checkbox" class="js-unread-toggle" name="unreadOnly" {{ user.unreadOnly ? 'checked="checked"' : '' }}/>
-  <label for="unreadOnly">Unread Only</label>
+  <div class="btn-group js-unread-toggle" data-unread-only="{{ user.unreadOnly ? '1' : '0' }}">
+    {% set unreadCount = feed.getUnreadCount() %}
+    <a class="btn dropdown-toggle" data-toggle="dropdown" href="javascript:;">
+      <span class="js-button-text">
+        {% if user.unreadOnly %}{{ unreadCount }} unread items {% else %} All items {% endif %}
+      </span>
+      <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+      <li><a class="js-all" href="javascript:;">All items</a></li>
+      <li><a class="js-unread" href="javascript:;">{{ unreadCount }} unread items</a></li>
+    </ul>
+  </div>
+
+
   {% for article in feed.articlesByDate %}
     <article data-id="{{ article._id }}" class="{{ loop.last ? 'last' : '' }} {{ article.read ? 'read' : '' }}">
       <div class="meta pull-right muted" title="{{ article.date | date('F j, Y g:iA') }}">

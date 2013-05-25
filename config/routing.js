@@ -1,4 +1,3 @@
-
 module.exports = function (app) {
 
   var feed = require('../app/controllers/feed');
