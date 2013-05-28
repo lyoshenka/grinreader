@@ -1,6 +1,7 @@
 article {
-  border: solid 1px #ccc;
-  padding: 5px 10px;
+  border: solid 1px #ddd;
+  box-shadow: 0 0 4px #e3e5eb;
+  margin-bottom: 20px;
 }
 article.read {
   background-color: #f3f3f3;
@@ -8,8 +9,19 @@ article.read {
 article.read a {
   color: #333;
 }
-article.last {
-  margin-bottom: 40px;
+article.active {
+  border-left-color: #4d90f0;
+}
+article .content {
+  padding: 5px 10px;
+}
+article .footer {
+  background-color: #f3f3f3;
+  padding: 5px 10px;
+}
+.after-articles {
+  color: #999;
+  margin-bottom: 20px;
 }
 footer {
   background-color: #eee;

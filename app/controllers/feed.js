@@ -32,10 +32,10 @@ exports.list = function(req, res) {
   });
 };
 
-exports.markRead = function(req, res) {
+exports.readStatus = function(req, res) {
   Feed.findOneByArticleId(req.params.articleId)
   .done(function(feed) {
-    feed.articles.id(req.params.articleId).read = 1;
+    feed.articles.id(req.params.articleId).read = parseInt(req.query.value);
     Q.ninvoke(feed, 'save')
     .then(function() {
       res.json({ success: true });
