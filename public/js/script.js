@@ -57,9 +57,9 @@ $(function() {
       curr.removeClass('active');
       next.addClass('active');
       next.parents().scrollTop(next.offset().top);
-      if (direction == 'next') {
-        readUnread(curr, true);
-      }
+    }
+    if (direction == 'next') {
+      readUnread(curr, true);
     }
   };
 
