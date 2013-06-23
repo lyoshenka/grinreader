@@ -25,7 +25,6 @@ userSchema.statics.findOrCreate = function () {
       deferred.reject(err);
     }
     else if (!user) {
-      console.log('creating');
       self.create({}, function(err, user) {
         if (err) {
           deferred.reject(err);

@@ -2,9 +2,12 @@
 <ul class="unstyled">
   {# sidebarFeed comes from locals in server.js #}
   {% for feed in sidebarFeeds %}
-    <li class="feed_list_item">
-      <a href="/feed/{{ feed.id }}">{{ feed.name }}</a> ({{ feed.getUnreadCount() }})
-    </li>
+    {% set unreadCount = feed.getUnreadCount() %}
+    {% if not user.unreadOnly or unreadCount %}
+      <li class="feed_list_item">
+        <a href="/feed/{{ feed.id }}">{{ feed.name }}</a> ({{ unreadCount }})
+      </li>
+    {% endif %}
   {% endfor %}
 </ul>
 <a class="btn" href="/feed/import">Import</a>
