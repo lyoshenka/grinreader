@@ -7,6 +7,8 @@ var mongoose = require('mongoose'),
 
 var articleSchema = new mongoose.Schema({
   title: { type: String, default: '' },
+  author: { type: String, default: '' },
+  summary: { type: String, default: '' },
   body: { type: String, default: '' },
   url: { type: String, default: '' },
   guid: { type: String, default: '' },
@@ -16,6 +18,8 @@ var articleSchema = new mongoose.Schema({
 
 var feedSchema = new mongoose.Schema({
     name: String,
+    description: String,
+    author: String,
     url: String,
     link: { type: String, default: '' },
     articles: { type: [articleSchema] }
@@ -71,7 +75,9 @@ feedSchema.methods.fetchUpdates = function(articles) {
 
           a.set({
             title: article.title,
+            summary: article.summary,
             body: article.description,
+            author: article.author,
             url: article.link,
             date: article.pubdate
           });
@@ -131,7 +137,9 @@ feedSchema.statics.addFeed = function (url) {
         Q.ninvoke(self, 'create', {
           name: meta.title || 'No Title',
           url: url,
-          link: meta.link
+          link: meta.link,
+          description: meta.description || '',
+          author: meta.author || ''
         })
         .invoke('fetchUpdates', articles)
         .done(function(feed) {
