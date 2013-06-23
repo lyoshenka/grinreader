@@ -30,6 +30,11 @@ $(function() {
     {
       readUnread(anchor.closest('article'), true);
     }
+
+    if (anchor.hasClass('js-scroll-to-top'))
+    {
+      window.scrollTo(0,0);
+    }
   });
 
 

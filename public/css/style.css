@@ -20,7 +20,8 @@ article .footer {
   background-color: #f3f3f3;
   padding: 5px 10px;
 }
-.after-articles {
+.after-articles,
+.after-articles a {
   color: #999;
   margin-bottom: 20px;
 }
