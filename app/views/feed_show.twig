@@ -20,7 +20,7 @@
   </div>
 
 
-  <h3><a href="{{ feed.url }}">{{ feed.name }}</a></h3>
+  <h3><a href="{{ feed.url }}">{{ feed.title }}</a></h3>
 
 
   {% for article in feed.articlesByDate %}
@@ -34,7 +34,7 @@
           </div>
         {% endif %}
         <h4><a href="{{ article.url }}">{{ article.title }}</a></h4>
-        <div class="muted">by: {{ article.author }}</div>
+        <div class="muted">by {{ article.author }}</div>
         <div class="row-fluid">
           <div class="span8">
             {{ article.body }}

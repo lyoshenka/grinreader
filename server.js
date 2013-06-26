@@ -8,6 +8,9 @@ var express = require('express')
   , argv = require('optimist').argv
   , Q = require('q')
   , fancyTimestamp = require('fancy-timestamp')
+  , passport = require('passport')
+  , LocalStrategy = require('passport-local').Strategy
+  , MongoStore = require('connect-mongo')(express)
   ;
 
 if(process.env.NODETIME_ACCOUNT_KEY) {
@@ -17,7 +20,8 @@ if(process.env.NODETIME_ACCOUNT_KEY) {
   });
 }
 
-mongoose.connect(process.env.MONGOHQ_URL || 'mongodb://localhost/reader');
+var mongoUrl = process.env.MONGOHQ_URL || 'mongodb://localhost/reader';
+mongoose.connect(mongoUrl);
 
 // load models
 var models_path = __dirname + '/app/models'
@@ -58,10 +62,36 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser('0a4992489917ba5aadff943b383175bfae107534'));
-app.use(express.session());
+app.use(express.session({
+  store: new MongoStore({
+    url: mongoUrl
+  }),
+  secret: 'irish wristwatch'
+}));
 app.use(flash());
 app.use(require('./config/globals'));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(app.router);
+
+// passport
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    if (username == 'grin' && password == 'grin') {
+      return done(null, { username: username });
+    }
+    return done(null, false);
+  }
+));
+
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
+
 
 // development only
 if ('development' == app.get('env')) {

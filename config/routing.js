@@ -1,4 +1,27 @@
+var passport = require('passport');
+
 module.exports = function (app) {
+
+  app.get('/login', function(req, res){
+    res.render('login', { username: req.user, message: req.flash('error') });
+  });
+
+  app.post('/login',
+    passport.authenticate('local', {
+      successRedirect: '/',
+      failureRedirect: '/login',
+      failureFlash: true
+    })
+  );
+
+
+  app.all('*', function(req, res, next) {
+    if (!req.user) {
+      res.redirect('/login');
+    }
+    next();
+  });
+
 
   var feed = require('../app/controllers/feed');
   app.get('/', feed.list);
@@ -8,6 +31,7 @@ module.exports = function (app) {
   app.all('/feed/import', feed.import);
   app.get('/feed/readStatus/:articleId', feed.readStatus);
   app.get('/feed/:id', feed.show);
+
 
   var option = require('../app/controllers/option');
   app.get('/option/unreadOnly', option.unreadOnly);

@@ -5,7 +5,7 @@
     {% set unreadCount = feed.getUnreadCount() %}
     {% if not user.unreadOnly or unreadCount %}
       <li class="feed_list_item">
-        <a href="/feed/{{ feed.id }}">{{ feed.name }}</a> ({{ unreadCount }})
+        <a href="/feed/{{ feed.id }}">{{ feed.title }}</a> ({{ unreadCount }})
       </li>
     {% endif %}
   {% endfor %}
