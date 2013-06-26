@@ -28,9 +28,11 @@
     {% if article.read and user.unreadOnly %}{% set classes = classes | merge(['hide']) %}{% endif %}
     <article data-id="{{ article._id }}" class="{{ classes | join(' ') }}">
       <div class="content">
-        <div class="meta pull-right muted" title="{{ article.date | date('F j, Y g:iA') }}">
-          {{ article.date | fancyTimestamp }}
-        </div>
+        {% if date %}
+          <div class="meta pull-right muted" title="{{ article.date | date('F j, Y g:iA') }}">
+            {{ article.date | fancyTimestamp }}
+          </div>
+        {% endif %}
         <h4><a href="{{ article.url }}">{{ article.title }}</a></h4>
         <div class="muted">by: {{ article.author }}</div>
         <div class="row-fluid">
