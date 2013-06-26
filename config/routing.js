@@ -2,8 +2,11 @@ var passport = require('passport');
 
 module.exports = function (app) {
 
-  app.get('/login', function(req, res){
-    res.render('login', { username: req.user, message: req.flash('error') });
+  app.get('/login', function(req, res) {
+    if (req.user) {
+      res.redirect('/');
+    }
+    res.render('login');
   });
 
   app.post('/login',

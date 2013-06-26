@@ -3,11 +3,14 @@ var mongoose = require('mongoose'),
 
 module.exports = function (req, res, next) {
   // globals
+
   Q.all([
-    mongoose.model('User').findOrCreate()
+    mongoose.model('User').findOrCreate(),
+    req.flash()
   ])
-  .spread(function(user) {
+  .spread(function(user,flashes) {
     req.app.locals.user = user;
+    req.app.locals.flashes = flashes;
 
     if (req.xhr) {
       next();

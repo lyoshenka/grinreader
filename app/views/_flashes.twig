@@ -1,0 +1,10 @@
+{% set alertTypeAvaillable = ['info', 'success', 'warning', 'error'] %}
+{% if flashes is defined %}
+  {% for alertType in alertTypeAvaillable %}
+    {% if flashes[alertType] %}
+      <div class="alert alert-{{ alertType }}" >
+          {{ flashes[alertType] }}
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endif %}
