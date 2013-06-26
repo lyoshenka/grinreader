@@ -46,28 +46,33 @@ exports.readStatus = function(req, res) {
 };
 
 exports.delete = function(req, res) {
-  Q.ninvoke(Feed, 'findById', req.params.id)
-  .done(function(feed) {
-    Q.ninvoke(feed,'remove')
-    .done(function() {
-      req.flash('success', 'Feed deleted.');
-      res.redirect('/'  );
-    })
-  }, function(error) {
-    res.render('error', {error: error});
-  });
+  req.flash('error', 'Deleting off right now.');
+  res.redirect('/');
+
+  // Q.ninvoke(Feed, 'findById', req.params.id)
+  // .done(function(feed) {
+  //   Q.ninvoke(feed,'remove')
+  //   .done(function() {
+  //     req.flash('success', 'Feed deleted.');
+  //     res.redirect('/');
+  //   })
+  // }, function(error) {
+  //   res.render('error', {error: error});
+  // });
 };
 
 exports.deleteAll = function(req, res) {
-  if (req.query.confirm) {
-    Q.ninvoke(Feed,'remove')
-    .done(function() {
-      res.redirect('/');
-    });
-  }
-  else {
-    res.render('feed_delete_all');
-  }
+  req.flash('error', 'Deleting off right now.');
+  res.redirect('/');
+  // if (req.query.confirm) {
+  //   Q.ninvoke(Feed,'remove')
+  //   .done(function() {
+  //     res.redirect('/');
+  //   });
+  // }
+  // else {
+  //   res.render('feed_delete_all');
+  // }
 };
 
 exports.import = function(req, res) {
