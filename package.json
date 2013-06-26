@@ -22,6 +22,9 @@
     "optimist": "~0.4.0",
     "q": "~0.9.3",
     "fancy-timestamp": "0.0.3",
-    "nodetime": "~0.8.12"
+    "nodetime": "~0.8.12",
+    "passport-local": "~0.1.6",
+    "passport": "~0.1.17",
+    "connect-mongo": "~0.3.2"
   }
 }
