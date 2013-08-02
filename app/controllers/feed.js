@@ -15,7 +15,7 @@ exports.new = function(req, res) {
 };
 
 exports.show = function(req, res) {
-  Q.ninvoke(Feed, 'findByIdForShow', req.params.id, req.app.locals.user.unreadOnly)
+  Q.ninvoke(Feed, 'findById', req.params.id)
   .done(function(feed) {
     res.render('feed_show', { feed: feed });
   }, function(error) {

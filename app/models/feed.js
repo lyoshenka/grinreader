@@ -83,17 +83,6 @@ feedSchema.statics.findOneByUrl = function (url) {
   return deferred.promise;
 };
 
-feedSchema.statics.findOneByIdForShow = function (id, unreadArticlesOnly) {
-  unreadArticlesOnly = typeof unreadArticlesOnly !== 'undefined' ? a : false;
-  var deferred = Q.defer(),
-      condition = unreadArticlesOnly ?
-                  { _id: id, articles: { $elemMatch: { read: false } }} :
-                  { _id: id };
-
-  this.findOne(condition).exec(deferred.makeNodeResolver());
-  return deferred.promise;
-}
-
 feedSchema.statics.findOneByArticleId = function (articleId) {
   var deferred = Q.defer();
   this.findOne({ articles: { $elemMatch: { _id: articleId } }}).exec(deferred.makeNodeResolver());
