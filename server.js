@@ -11,6 +11,7 @@ var express = require('express')
   , passport = require('passport')
   , LocalStrategy = require('passport-local').Strategy
   , MongoStore = require('connect-mongo')(express)
+  , raven = require('raven')
   ;
 
 if(process.env.NODETIME_ACCOUNT_KEY) {
@@ -73,6 +74,9 @@ app.use(require('./config/globals'));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(app.router);
+
+app.error(raven.middleware.express('https://6beb7ab0a48a4446b128acf98084801e:8b278391ae33444cb2480ad83c26caec@app.getsentry.com/11504'));
+
 
 // passport
 passport.use(new LocalStrategy(
