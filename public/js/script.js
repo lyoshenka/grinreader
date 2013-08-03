@@ -70,13 +70,17 @@ $(function() {
 
   Mousetrap.bind('n', function() {
     prevNext('next');
-  });
+  }, 'Next article in feed.');
 
   Mousetrap.bind('p', function() {
     prevNext('prev');
-  });
+  }, 'Previous article in feed.');
 
-  Mousetrap.bind('u', function(){
+  Mousetrap.bind('u', function() {
     readUnread($('article.active'), false);
-  })
+  }, 'Mark current article as unread.');
+
+  Mousetrap.bind('t', function() {
+    window.scrollTo(0,0);
+  }, 'Scroll to top.');
 });
