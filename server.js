@@ -51,6 +51,11 @@ twig.extendFilter("fancyTimestamp", function(timestamp) {
 
 var app = express();
 
+if(process.env.SENTRY_DSN) {
+  app.use(raven.middleware.express(process.env.SENTRY_DSN));
+}
+
+
 // all environments
 app.set('port', process.env.PORT || 8000);
 app.set('views', __dirname + '/app/views');
@@ -74,8 +79,6 @@ app.use(require('./config/globals'));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(app.router);
-
-app.error(raven.middleware.express('https://6beb7ab0a48a4446b128acf98084801e:8b278391ae33444cb2480ad83c26caec@app.getsentry.com/11504'));
 
 
 // passport
