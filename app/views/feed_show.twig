@@ -1,4 +1,7 @@
-{% extends "layout.twig" %}
+{% if not xhr %}
+  {% extends "layout.twig" %}
+{% endif %}
+
 {% block content %}
   <div class="pull-right">
     <div class="btn-group js-unread-toggle" data-unread-only="{{ user.unreadOnly ? '1' : '0' }}">

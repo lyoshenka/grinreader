@@ -7,6 +7,17 @@ $(function() {
     return !a != !b;
   };
 
+
+  // ajax sidebar
+  $('#sidebar a.js-load-ajax').click(function(eventObject) {
+    eventObject.preventDefault();
+    $.get($(this).attr('href'), function(data) {
+      $('.js-feed-content').html(data);
+    });
+  });
+
+
+
   var readUnread = function(article, read) {
     // id can be an article element or a string
     //var article = !!id.nodeName ? id : $('article[data-id="' + id +'"]');
