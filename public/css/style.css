@@ -32,3 +32,13 @@ footer {
   border-right: solid 1px #eee;
   padding-top: 50px;
 }
+#loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 75px;
+  height: 20px;
+  background-color: red;
+  color: white;
+  text-align: center;
+}

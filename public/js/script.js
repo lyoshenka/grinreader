@@ -11,8 +11,10 @@ $(function() {
   // ajax sidebar
   $('#sidebar a.js-load-ajax').click(function(eventObject) {
     eventObject.preventDefault();
+    $('#loading').show();
     $.get($(this).attr('href'), function(data) {
       $('.js-feed-content').html(data);
+      $('#loading').hide();
     });
   });
 
