@@ -1,12 +1,16 @@
 $(function() {
   $("[data-toggle='tooltip']").tooltip(); // enable tooltips
 
-  $('article:visible').first().addClass('active'); // first visible article is active
-
   var xor = function(a,b) {
     return !a != !b;
   };
 
+  var makeActive = function (article) {
+    $('article.active').removeClass('active');
+    $(article).addClass('active');
+  };
+
+  makeActive($('article').first());
 
   var readUnread = function(article, read) {
     // id can be an article element or a string
@@ -32,13 +36,17 @@ $(function() {
       {
         history.pushState({url: url}, 'Reader', url);
       }
-      $('.js-feed-content').html(data).find('article').first().addClass('active');
+      $('.js-feed-content').html(data);
+      makeActive($('article').first());
       $('#loading').hide();
     });
   };
 
   $(window).on('popstate', function (e) {
-    loadFeed(e.originalEvent.state.url, false);
+    if (e.originalEvent.state)
+    {
+      loadFeed(e.originalEvent.state.url, false);
+    }
   });
 
   $('body').on('click', 'a', function(eventObject) {
@@ -50,7 +58,12 @@ $(function() {
 
     if (anchor.hasClass('js-mark-read'))
     {
-      readUnread(anchor.closest('article'), true);
+      var article = anchor.closest('article');
+      readUnread(article, true);
+      if (!article.is(':last-child'))
+      {
+        makeActive(article.next('article'));
+      }
     }
 
     if (anchor.hasClass('js-scroll-to-top'))
@@ -87,8 +100,7 @@ $(function() {
                curr.prevAll('article:visible').first();
 
     if (next.is('article')) {
-      curr.removeClass('active');
-      next.addClass('active');
+      makeActive(next);
       next.parents().scrollTop(next.offset().top);
     }
     if (direction == 'next') {
