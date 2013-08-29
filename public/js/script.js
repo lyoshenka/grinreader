@@ -8,18 +8,6 @@ $(function() {
   };
 
 
-  // ajax sidebar
-  $('#sidebar a.js-load-ajax').click(function(eventObject) {
-    eventObject.preventDefault();
-    $('#loading').show();
-    $.get($(this).attr('href'), function(data) {
-      $('.js-feed-content').html(data);
-      $('#loading').hide();
-    });
-  });
-
-
-
   var readUnread = function(article, read) {
     // id can be an article element or a string
     //var article = !!id.nodeName ? id : $('article[data-id="' + id +'"]');
@@ -32,7 +20,28 @@ $(function() {
     }
   };
 
-  $('body').on('click', 'a', function() {
+  var loadFeed = function(url, pushState) {
+    if (typeof pushState === 'undefined')
+    {
+      pushState = true;
+    }
+    $('#loading').show();
+    window.scrollTo(0,0);
+    $.get(url, function(data) {
+      if (pushState)
+      {
+        history.pushState({url: url}, 'Reader', url);
+      }
+      $('.js-feed-content').html(data).find('article').first().addClass('active');
+      $('#loading').hide();
+    });
+  };
+
+  $(window).on('popstate', function (e) {
+    loadFeed(e.originalEvent.state.url, false);
+  });
+
+  $('body').on('click', 'a', function(eventObject) {
     var anchor = $(this);
     if (anchor.data('confirm') && !confirm(anchor.data('confirm')))
     {
@@ -48,7 +57,13 @@ $(function() {
     {
       window.scrollTo(0,0);
     }
-  });
+ 
+    if (anchor.hasClass('js-load-ajax'))
+    {
+      eventObject.preventDefault();
+      loadFeed(anchor.attr('href'));
+    }
+ });
 
 
   $('.js-unread-toggle a').click(function() {
