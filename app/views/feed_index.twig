@@ -1,11 +1,5 @@
 {% extends "layout.twig" %}
 {% block content %}
-  <h2>Feeds ({{ feeds.length }})</h2>
-  <ul class="unstyled">
-    {% for feed in feeds %}
-      <li class="feed_list_item">
-        <a href="/feed/{{ feed.id }}">{{ feed.title }}</a> ({{ feed.getUnreadCount() }})
-      </li>
-    {% endfor %}
-  </ul>
+  <h2>Howdy</h2>
+  <p>Choose a feed on the left to get started.</p>
 {% endblock %}

@@ -24,12 +24,7 @@ exports.show = function(req, res) {
 };
 
 exports.list = function(req, res) {
-  Feed.findForList()
-  .done(function(feeds) {
-    res.render('feed_index', {feeds: feeds});
-  }, function(error) {
-    res.render('error', {error: err});
-  });
+  res.render('feed_index');
 };
 
 exports.readStatus = function(req, res) {
