@@ -34,6 +34,7 @@ module.exports = function (app) {
   app.get('/feed/delete_all', feed.deleteAll);
   app.all('/feed/import', feed.import);
   app.get('/feed/readStatus/:articleId', feed.readStatus);
+  app.get('/feed/markAllRead/:id', feed.markAllRead);
   app.get('/feed/:id', feed.show);
 
 

@@ -40,6 +40,22 @@ exports.readStatus = function(req, res) {
   });
 };
 
+exports.markAllRead = function(req,res) {
+  Q.ninvoke(Feed, 'findById', req.params.id)
+  .done(function(feed) {
+    _.each(feed.articles, function(article) {
+      article.read = true;
+    });
+    Q.ninvoke(feed, 'save')
+    .done(function() {
+      req.flash('success', 'All articles marked as read.');
+      res.redirect('/feed/' + feed.id);
+    });
+  }, function(error) {
+    res.render('error', {error: error});
+  });
+};
+
 exports.update = function(req, res) {
   Q.ninvoke(Feed, 'findById', req.params.id)
   .done(function(feed) {

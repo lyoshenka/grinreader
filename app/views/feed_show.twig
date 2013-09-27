@@ -20,6 +20,9 @@
         <li><a class="js-unread" href="javascript:;">{{ unreadCount }} unread items</a></li>
       </ul>
     </div>
+    <a href="/feed/markAllRead/{{ feed.id }}" class="btn" data-toggle="tooltip" title="Mark All As Read">
+      <i class='icon-check'></i>
+    </a>
     <a href="/feed/delete/{{ feed.id }}" class="btn" data-toggle="tooltip" title="Unsubscribe" data-confirm="Are you sure you want to unsubscribe?">
       <i class='icon-trash'></i>
     </a>
