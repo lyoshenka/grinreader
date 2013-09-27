@@ -4,6 +4,9 @@
 
 {% block content %}
   <div class="pull-right">
+    <a href="/feed/update/{{ feed.id }}" class="btn" data-toggle="tooltip" title="Refresh">
+      <i class='icon-refresh'></i>
+    </a>
     <div class="btn-group js-unread-toggle" data-unread-only="{{ user.unreadOnly ? '1' : '0' }}">
       {% set unreadCount = feed.getUnreadCount() %}
       <a class="btn dropdown-toggle" data-toggle="dropdown" href="javascript:;">

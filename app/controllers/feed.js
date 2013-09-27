@@ -40,6 +40,20 @@ exports.readStatus = function(req, res) {
   });
 };
 
+exports.update = function(req, res) {
+  Q.ninvoke(Feed, 'findById', req.params.id)
+  .done(function(feed) {
+    feed.fetchUpdates()
+      .done(function() {
+        req.flash('success', 'Feed updated.');
+        res.redirect('/feed/' + feed.id);
+      });
+  }, function(error) {
+    res.render('error', {error: error});
+  });
+};
+
+
 exports.delete = function(req, res) {
   req.flash('error', 'Deleting off right now.');
   res.redirect('/');

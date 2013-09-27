@@ -29,6 +29,7 @@ module.exports = function (app) {
   var feed = require('../app/controllers/feed');
   app.get('/', feed.list);
   app.post('/feed/new', feed.new);
+  app.get('/feed/update/:id', feed.update);
   app.get('/feed/delete/:id', feed.delete);
   app.get('/feed/delete_all', feed.deleteAll);
   app.all('/feed/import', feed.import);
