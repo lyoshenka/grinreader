@@ -95,6 +95,7 @@ feedSchema.methods.fetchUpdates = function(articles) {
         var existingIds = self.getIds();
 
         _.each(articles, function(article) {
+          console.log('got one');
           var a = _.contains(existingIds, article.guid) ?
                   self.articles[self.articles.indexOf(self.getArticleByGuid(article.guid))] :
                   self.articles.create({ guid: article.guid });

@@ -44,6 +44,7 @@ exports.update = function(req, res) {
   Q.ninvoke(Feed, 'findById', req.params.id)
   .done(function(feed) {
     feed.fetchUpdates()
+      .invoke('save')
       .done(function() {
         req.flash('success', 'Feed updated.');
         res.redirect('/feed/' + feed.id);
