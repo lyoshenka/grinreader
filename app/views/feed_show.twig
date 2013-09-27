@@ -30,25 +30,32 @@
 
 
   {% for article in feed.articlesByDate if not article.read or not user.unreadOnly %}
-    {% set classes = article.read ? ['read'] : [] %}
-    <article data-id="{{ article._id }}" class="{{ classes | join(' ') }}">
-      <div class="content">
-        {% if article.date %}
-          <div class="meta pull-right muted" title="{{ article.date | date('F j, Y g:iA') }}">
-            {{ article.date | fancyTimestamp }}
-          </div>
-        {% endif %}
-        <h4><a href="{{ article.url }}">{{ article.title }}</a></h4>
-        <div class="muted">by {{ article.author }}</div>
-        <div class="row-fluid">
-          <div class="span8">
-            {{ article.body }}
+    {% if loop.index <= maxArticles %}
+      {% set classes = article.read ? ['read'] : [] %}
+      <article data-id="{{ article._id }}" class="{{ classes | join(' ') }}">
+        <div class="content">
+          {% if article.date %}
+            <div class="meta pull-right muted" title="{{ article.date | date('F j, Y g:iA') }}">
+              {{ article.date | fancyTimestamp }}
+            </div>
+          {% endif %}
+          <h4><a href="{{ article.url }}">{{ article.title }}</a></h4>
+          <div class="muted">by {{ article.author }}</div>
+          <div class="row-fluid">
+            <div class="span8">
+              {{ article.body }}
+            </div>
           </div>
         </div>
+        <div class="footer">
+          <a class="js-mark-read" href="javascript:;">Mark Read</a>
+        </div>
+      </article>
+    {% endif %}
+    {% if loop.index == feed.articlesByDate|length and loop.index > maxArticles %}
+      <div class="load-more">
+        Refresh for more articles.
       </div>
-      <div class="footer">
-        <a class="js-mark-read" href="javascript:;">Mark Read</a>
-      </div>
-    </article>
+    {% endif %}
   {% endfor %}
 {% endblock %}
