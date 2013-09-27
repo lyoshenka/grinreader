@@ -40,6 +40,7 @@ var feedSchema = new mongoose.Schema({
     date: { type: Date }, // date of most recent update
     pubdate: { type: Date }, // original published date
     author: { type: String, default: '' },
+    lastError: { type: String, default: '' },
     language: { type: String, default: '' },
     image: {
       url: { type: String, default: '' },
@@ -139,7 +140,8 @@ feedSchema.methods.fetchUpdates = function(articles) {
     request(self.url)
       .pipe(new FeedParser({}))
       .on('error', function(error) {
-        deferred.reject(error);
+        self.lastError = error;
+        deferred.resolve(self);
       })
       .on('complete', function (meta, articles) {
         onComplete(articles);
