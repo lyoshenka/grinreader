@@ -24,6 +24,20 @@ $(function() {
     }
   };
 
+  var pinboard = function(article) {
+    var url = $(article).data('article-url'),
+        title = $(article).find('.js-title').text();
+
+    console.log('pinboard');
+    window.open(
+      'http://pinboard.in/add?url=' + encodeURIComponent(url) +
+//        '&description=' + encodeURIComponent(description) +
+        '&title=' + encodeURIComponent(title),
+      '_blank',
+      'toolbar=no,width=700,height=350'
+    );
+  };
+
   var loadFeed = function(url, pushState) {
     if (typeof pushState === 'undefined')
     {
@@ -31,15 +45,16 @@ $(function() {
     }
     $('#loading').show();
     window.scrollTo(0,0);
-    $.get(url, function(data) {
-      if (pushState)
-      {
-        history.pushState({url: url}, 'Reader', url);
-      }
-      $('.js-feed-content').html(data);
-      makeActive($('article').first());
-      $('#loading').hide();
-    });
+    $.ajax(url, { cache: false })
+      .done(function(data) {
+        if (pushState)
+        {
+          history.pushState({url: url}, 'Reader', url);
+        }
+        $('.js-feed-content').html(data);
+        makeActive($('article').first());
+        $('#loading').hide();
+      });
   };
 
   $(window).on('popstate', function (e) {
@@ -66,11 +81,16 @@ $(function() {
       }
     }
 
+    if (anchor.hasClass('js-pinboard'))
+    {
+      pinboard(anchor.closest('article'));
+    }
+
     if (anchor.hasClass('js-scroll-to-top'))
     {
       window.scrollTo(0,0);
     }
- 
+
     if (anchor.hasClass('js-load-ajax'))
     {
       eventObject.preventDefault();
@@ -79,7 +99,7 @@ $(function() {
  });
 
 
-  $('.js-unread-toggle a').click(function() {
+  $('.js-unread-toggle').find('a').click(function() {
     if ($(this).hasClass('js-all') || $(this).hasClass('js-unread')) {
       var control = $(this).closest('.js-unread-toggle'),
           currentVal = control.data('unread-only') ? 1 : 0,
