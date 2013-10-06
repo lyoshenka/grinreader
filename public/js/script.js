@@ -44,6 +44,7 @@ $(function() {
       pushState = true;
     }
     $('#loading').show();
+    $('#flashes').hide();
     window.scrollTo(0,0);
     $.ajax(url, { cache: false })
       .done(function(data) {
