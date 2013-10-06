@@ -87,20 +87,6 @@ exports.delete = function(req, res) {
   // });
 };
 
-exports.deleteAll = function(req, res) {
-  req.flash('error', 'Deleting off right now.');
-  res.redirect('/');
-  // if (req.query.confirm) {
-  //   Q.ninvoke(Feed,'remove')
-  //   .done(function() {
-  //     res.redirect('/');
-  //   });
-  // }
-  // else {
-  //   res.render('feed_delete_all');
-  // }
-};
-
 exports.import = function(req, res) {
   if (req.method == 'POST') {
     var lines = _.compact(req.body.feeds.toString().split(/\r\n|\r|\n/g)),
