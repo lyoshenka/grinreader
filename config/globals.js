@@ -19,7 +19,7 @@ module.exports = function (req, res, next) {
 
     // non-xhr globals
     Q.all([
-      mongoose.model('Feed').findForList()
+      mongoose.model('Feed').findForSidebar()
     ])
     .spread(function(feeds) {
       req.app.locals.sidebarFeeds = feeds;

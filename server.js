@@ -1,7 +1,3 @@
-if(process.env.NODEFLY_APPLICATION_KEY) {
-  require('strong-agent').profile(process.env.NODEFLY_APPLICATION_KEY, 'Reader');
-}
-
 var express = require('express')
   , http = require('http')
   , fs = require('fs')

@@ -2,10 +2,9 @@
 <ul class="unstyled">
   {# sidebarFeed comes from locals in server.js #}
   {% for feed in sidebarFeeds %}
-    {% set unreadCount = feed.getUnreadCount() %}
-    {% if not user.unreadOnly or unreadCount %}
+    {% if not user.unreadOnly or feed.unreadCount %}
       <li class="feed_list_item">
-        <a class="js-load-ajax" href="/feed/{{ feed.id }}">{{ feed.title }}</a> ({{ unreadCount }})
+        <a class="js-load-ajax" href="/feed/{{ feed.id }}">{{ feed.title }}</a> ({{ feed.unreadCount }})
       </li>
     {% endif %}
   {% endfor %}

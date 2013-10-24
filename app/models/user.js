@@ -11,12 +11,6 @@ userSchema.virtual('articlesByDate').get(function() {
   return _.sortBy(this.articles, 'date').reverse();
 });
 
-userSchema.methods.getUnreadCount = function () {
-  return _.filter(this.articles, function(article){
-    return !article.read;
-  }).length;
-};
-
 userSchema.statics.findOrCreate = function () {
   var self = this,
       deferred = Q.defer();

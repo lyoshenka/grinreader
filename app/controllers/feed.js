@@ -31,6 +31,7 @@ exports.readStatus = function(req, res) {
   Feed.findOneByArticleId(req.params.articleId)
   .done(function(feed) {
     feed.articles.id(req.params.articleId).read = parseInt(req.query.value);
+    feed.recalcUnreadCount();
     Q.ninvoke(feed, 'save')
     .then(function() {
       res.json({ success: true });
@@ -46,6 +47,7 @@ exports.markAllRead = function(req,res) {
     _.each(feed.articles, function(article) {
       article.read = true;
     });
+    feed.unreadCount = 0;
     Q.ninvoke(feed, 'save')
     .done(function() {
       req.flash('success', 'All articles marked as read.');

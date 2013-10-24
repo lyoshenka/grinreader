@@ -7,25 +7,28 @@ module.exports = function() {
   var deferred = Q.defer(),
       updated = 0;
 
-  Feed.findForList()
-  .then(function(feeds) {
-    if (!feeds.length) {
+  Feed.findAllIds()
+  .then(function(feedIds) {
+    if (!feedIds.length) {
       deferred.resolve();
       return;
     }
 
-    _.each(feeds, function(feed) {
-      feed.fetchUpdates()
-      .then(function() {
-        var deferred = Q.defer();
-        feed.save(deferred.makeNodeResolver());
-        return deferred.promise;
-      })
-      .done(function() {
-        updated += 1;
-        if (updated == feeds.length) {
-          deferred.resolve(feeds);
-        }
+    _.each(feedIds, function(feedId) {
+      Q.ninvoke(Feed, 'findById', feedId)
+      .done(function(feed) {
+        feed.fetchUpdates()
+        .then(function() {
+          var deferred = Q.defer();
+          feed.save(deferred.makeNodeResolver());
+          return deferred.promise;
+        })
+        .done(function() {
+          updated += 1;
+          if (updated == feedIds.length) {
+            deferred.resolve(feedIds);
+          }
+        });
       });
     });
   });

@@ -8,16 +8,15 @@
       <i class='icon-refresh'></i>
     </a>
     <div class="btn-group js-unread-toggle" data-unread-only="{{ user.unreadOnly ? '1' : '0' }}">
-      {% set unreadCount = feed.getUnreadCount() %}
       <a class="btn dropdown-toggle" data-toggle="dropdown" href="javascript:;">
         <span class="js-button-text">
-          {% if user.unreadOnly %}{{ unreadCount }} unread items {% else %} All items {% endif %}
+          {% if user.unreadOnly %}{{ feed.unreadCount }} unread items {% else %} All items {% endif %}
         </span>
         <span class="caret"></span>
       </a>
       <ul class="dropdown-menu pull-right">
         <li><a class="js-all" href="javascript:;">All items</a></li>
-        <li><a class="js-unread" href="javascript:;">{{ unreadCount }} unread items</a></li>
+        <li><a class="js-unread" href="javascript:;">{{ feed.unreadCount }} unread items</a></li>
       </ul>
     </div>
     <a href="/feed/markAllRead/{{ feed.id }}" class="btn" data-toggle="tooltip" title="Mark All As Read">

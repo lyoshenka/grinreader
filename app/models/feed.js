@@ -33,30 +33,31 @@ var articleSchema = new mongoose.Schema({
 });
 
 var feedSchema = new mongoose.Schema({
-    title: String,
-    description: { type: String, default: '' },
-    link: { type: String, default: '' }, // url of the website the feed is for
-    url: String, // url of the feed
-    date: { type: Date }, // date of most recent update
-    pubdate: { type: Date }, // original published date
-    author: { type: String, default: '' },
-    lastError: { type: String, default: '' },
-    language: { type: String, default: '' },
-    image: {
-      url: { type: String, default: '' },
-      title: { type: String, default: '' }
-    },
-    copyright: { type: String, default: '' },
-    generator: { type: String, default: '' },
-    categories: [String],
-    articles: { type: [articleSchema] }
+  title: String,
+  description: { type: String, default: '' },
+  link: { type: String, default: '' }, // url of the website the feed is for
+  url: String, // url of the feed
+  date: { type: Date }, // date of most recent update
+  pubdate: { type: Date }, // original published date
+  author: { type: String, default: '' },
+  lastError: { type: String, default: '' },
+  unreadCount: { type: Number, default: 0, min: 0 },
+  language: { type: String, default: '' },
+  image: {
+    url: { type: String, default: '' },
+    title: { type: String, default: '' }
+  },
+  copyright: { type: String, default: '' },
+  generator: { type: String, default: '' },
+  categories: [String],
+  articles: { type: [articleSchema] }
 });
 
 feedSchema.virtual('articlesByDate').get(function() {
   return _.sortBy(this.articles, 'date').reverse();
 });
 
-feedSchema.methods.getIds = function() {
+feedSchema.methods.getArticleIds = function() {
   return _.pluck(this.articles, 'guid');
 };
 
@@ -66,15 +67,28 @@ feedSchema.methods.getArticleByGuid = function(guid) {
   });
 };
 
-feedSchema.methods.getUnreadCount = function () {
-  return _.filter(this.articles, function(article){
+feedSchema.methods.recalcUnreadCount = function() {
+  this.unreadCount = _.filter(this.articles, function(article) {
     return !article.read;
   }).length;
 };
 
-feedSchema.statics.findForList = function () {
+feedSchema.statics.findAllIds = function() {
   var deferred = Q.defer();
-  this.find().sort('title').exec(deferred.makeNodeResolver());
+  this.find({}, {_id: 1}).exec(function(err, feeds) {
+    if (err != null) {
+      deferred.reject(err);
+    }
+    else {
+      deferred.resolve(a_.pluck(feeds, '_id'));
+    }
+  });
+  return deferred.promise;
+};
+
+feedSchema.statics.findForSidebar = function () {
+  var deferred = Q.defer();
+  this.find({}, {title: 1, url: 1, unreadCount: 1}).sort({title: 1}).exec(deferred.makeNodeResolver());
   return deferred.promise;
 };
 
@@ -93,7 +107,7 @@ feedSchema.statics.findOneByArticleId = function (articleId) {
 feedSchema.methods.fetchUpdates = function(articles) {
   var self = this,
       onComplete = function(articles) {
-        var existingIds = self.getIds();
+        var existingIds = self.getArticleIds();
 
         _.each(articles, function(article) {
           var a = _.contains(existingIds, article.guid) ?
@@ -126,6 +140,8 @@ feedSchema.methods.fetchUpdates = function(articles) {
             self.articles.push(a);
           }
         });
+
+        self.recalcUnreadCount();
       };
 
   if (articles)
