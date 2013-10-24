@@ -80,7 +80,7 @@ feedSchema.statics.findAllIds = function() {
       deferred.reject(err);
     }
     else {
-      deferred.resolve(a_.pluck(feeds, '_id'));
+      deferred.resolve(_.pluck(feeds, '_id'));
     }
   });
   return deferred.promise;
