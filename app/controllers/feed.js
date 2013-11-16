@@ -41,8 +41,8 @@ exports.show = function(req, res) {
         baseUrl = getBaseUrl(article.guid);
       }
       if (baseUrl) {
-        article.body = article.body.replace(/href=("|')?\//gi, 'href=$1'+baseUrl+'/');
-        article.body = article.body.replace(/src=("|')?\//gi, 'src=$1'+baseUrl+'/');
+        article.body = article.body.replace(/href=("|')?\/([^\/])/gi, 'href=$1'+baseUrl+'/$2');
+        article.body = article.body.replace(/src=("|')?\/([^\/])/gi, 'src=$1'+baseUrl+'/$2');
       }
     });
     return feed;
