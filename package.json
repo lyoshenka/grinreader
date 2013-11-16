@@ -27,6 +27,7 @@
     "passport": "~0.1.17",
     "connect-mongo": "~0.3.2",
     "raven": "~0.5.1",
-    "strong-agent": "~0.2.6"
+    "strong-agent": "~0.2.6",
+    "crypto": "0.0.3"
   }
 }

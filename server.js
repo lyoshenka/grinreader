@@ -12,6 +12,7 @@ var express = require('express')
   , LocalStrategy = require('passport-local').Strategy
   , MongoStore = require('connect-mongo')(express)
   , raven = require('raven')
+  , crypto = require('crypto')
   ;
 
 if(process.env.NODETIME_ACCOUNT_KEY) {
@@ -84,7 +85,9 @@ app.use(app.router);
 // passport
 passport.use(new LocalStrategy(
   function(username, password, done) {
-    if (username == 'grin' && password == 'grin') {
+    var shasum = crypto.createHash('sha1');
+    shasum.update(password+'pAS$w0rd*4242*@_$ALT');
+    if (username == 'grin' && shasum.digest('hex') == '83b15ab5d48cda5360d68efcdf10f9e13c6dc8cd') {
       return done(null, { username: username });
     }
     return done(null, false);

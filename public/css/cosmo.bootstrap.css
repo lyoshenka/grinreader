@@ -748,6 +748,10 @@ h6 {
   text-rendering: optimizelegibility;
 }
 
+h1.login {
+  margin-bottom: 30px;
+}
+
 h1 small,
 h2 small,
 h3 small,
