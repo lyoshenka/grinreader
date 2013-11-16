@@ -31,6 +31,7 @@ module.exports = function (app) {
   app.post('/feed/new', feed.new);
   app.get('/feed/update/:id', feed.update);
   app.get('/feed/delete/:id', feed.delete);
+  app.get('/feed/disable/:id', feed.disable);
   app.all('/feed/import', feed.import);
   app.get('/feed/readStatus/:articleId', feed.readStatus);
   app.get('/feed/markAllRead/:id', feed.markAllRead);

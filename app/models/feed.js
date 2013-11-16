@@ -144,6 +144,10 @@ feedSchema.methods.fetchUpdates = function(articles) {
         self.recalcUnreadCount();
       };
 
+  if (self.disabled)
+  {
+    return Q(self);
+  }
   if (articles)
   {
     onComplete(articles);

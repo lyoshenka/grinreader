@@ -64,7 +64,7 @@ exports.readStatus = function(req, res) {
     feed.articles.id(req.params.articleId).read = parseInt(req.query.value);
     feed.recalcUnreadCount();
     Q.ninvoke(feed, 'save')
-    .then(function() {
+    .done(function() {
       res.json({ success: true });
     });
   }, function(error) {
@@ -120,6 +120,21 @@ exports.delete = function(req, res) {
   // });
 };
 
+exports.disable = function(req, res) {
+  Q.ninvoke(Feed, 'findById', req.params.id)
+  .done(function(feed) {
+    feed.disabled = true;
+    Q.ninvoke(feed,'save')
+    .done(function() {
+      req.flash('success', 'Feed updates disabled.');
+      res.redirect('/');
+    });
+  }, function(error) {
+    res.render('error', {error: error});
+  });
+};
+
+
 exports.import = function(req, res) {
   if (req.method == 'POST') {
     var lines = _.compact(req.body.feeds.toString().split(/\r\n|\r|\n/g)),
@@ -136,7 +151,7 @@ exports.import = function(req, res) {
           count = count + 1;
           if (count == lines.length) {
             if (errors.length) {
-              res.render('error', {error: errors.join("<br/>")})
+              res.render('error', {error: errors.join("<br/>")});
               return;
               // req.flash('error', errors.join("<br/>"));
             }
