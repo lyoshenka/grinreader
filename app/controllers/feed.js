@@ -5,6 +5,21 @@ var request = require('request'),
     Q = require('q'),
     _ = require('underscore');
 
+function getBaseUrl(url) {
+  var baseUrl = null;
+  if (url) {
+    var match = /((?:https?\:\/\/)?[^\/]+)/.exec(url);
+    if (match !== null) {
+      baseUrl = match[1];
+      if (baseUrl.indexOf('http') !== 0) {
+        baseUrl = 'http://' + baseUrl;
+      }
+      return baseUrl;
+    }
+  }
+  return null;
+}
+
 exports.new = function(req, res) {
   Feed.addFeed(req.param('url'))
   .done(function(feed) {
@@ -16,6 +31,22 @@ exports.new = function(req, res) {
 
 exports.show = function(req, res) {
   Q.ninvoke(Feed, 'findById', req.params.id)
+  .then(function(feed) {
+    var baseUrl = getBaseUrl(feed.link);
+    _.each(feed.articles, function(article) {
+      if (!baseUrl && article.url) {
+        baseUrl = getBaseUrl(article.url);
+      }
+      if (!baseUrl && article.guid) {
+        baseUrl = getBaseUrl(article.guid);
+      }
+      if (baseUrl) {
+        article.body = article.body.replace(/href=("|')?\//gi, 'href=$1'+baseUrl+'/');
+        article.body = article.body.replace(/src=("|')?\//gi, 'src=$1'+baseUrl+'/');
+      }
+    });
+    return feed;
+  })
   .done(function(feed) {
     res.render('feed_show', { feed: feed, xhr: req.xhr, maxArticles: 30 });
   }, function(error) {
