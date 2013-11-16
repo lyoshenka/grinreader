@@ -914,22 +914,26 @@ abbr.initialism {
 }
 
 blockquote {
-  padding: 0 0 0 15px;
   margin: 0 0 20px;
-  border-left: 5px solid #eeeeee;
+  border-left: 5px solid #cccccc;
+  padding: 10px 15px;
+  background-color: #fafafa;
 }
 
+/*
 blockquote p {
   margin-bottom: 0;
   font-size: 17.5px;
   font-weight: 300;
   line-height: 1.25;
 }
+*/
 
 blockquote small {
   display: block;
   line-height: 20px;
   color: #dfdfdf;
+  /*color: #cccccc; */
 }
 
 blockquote small:before {
@@ -938,9 +942,7 @@ blockquote small:before {
 
 blockquote.pull-right {
   float: right;
-  padding-right: 15px;
-  padding-left: 0;
-  border-right: 5px solid #eeeeee;
+  border-right: 5px solid #cccccc;
   border-left: 0;
 }
 
@@ -6188,21 +6190,6 @@ h4 {
 h5,
 h6 {
   font-size: 11px;
-}
-
-blockquote {
-  padding: 10px 15px;
-  background-color: #eeeeee;
-  border-left-color: #bbbbbb;
-}
-
-blockquote.pull-right {
-  padding: 10px 15px;
-  border-right-color: #bbbbbb;
-}
-
-blockquote small {
-  color: #bbbbbb;
 }
 
 .muted {
