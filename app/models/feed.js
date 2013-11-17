@@ -43,6 +43,7 @@ var feedSchema = new mongoose.Schema({
   lastError: { type: String, default: '' },
   unreadCount: { type: Number, default: 0, min: 0 },
   language: { type: String, default: '' },
+  disabled: { type: Boolean, default: false },
   image: {
     url: { type: String, default: '' },
     title: { type: String, default: '' }
